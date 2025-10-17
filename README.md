@@ -23,7 +23,7 @@
 
 ### 克隆仓库
 ```bash
-git clone <your-repository-url>
+git clone git@github.com:Siers1/BillSyncer_frontend.git
 cd ConsumptionBill
 ```
 
