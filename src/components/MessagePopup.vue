@@ -190,9 +190,6 @@ const refreshInvitations = async () => {
 
 const selectInvitation = async (invitation: InvitationDTO) => {
   selectedInvitation.value = invitation;
-  
-  // 点击消息后调用已读接口
-  console.log('调用已读接口，notificationId:', invitation.id);
   await readNotification(invitation.id);
   
   // 调用完已读接口后，刷新未读数量

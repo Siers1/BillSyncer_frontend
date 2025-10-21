@@ -34,3 +34,11 @@ export const deleteBillUser = (billId: number, userId: number) => {
 export const getBillUsers = (billId: number) => {
     return request.post<UserDTO[]>(`/bill/users?billId=${billId}`);
 };
+
+export const addManager = (billId: number, userId: number) => {
+    return request.post<void>(`/bill/add-manager?billId=${billId}&userId=${userId}`, { showSuccess: true });
+}
+
+export const deleteManager = (billId: number, userId: number) => {
+    return request.post<void>(`/bill/delete-manager?billId=${billId}&userId=${userId}`, { showSuccess: true });
+}

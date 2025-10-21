@@ -136,20 +136,44 @@
                         </div>
                         <div v-else>
                             <div v-for="user in billUsers" :key="user.id" class="user-item">
-                                <div class="user-info">
-                                    <div class="user-avatar">
-                                        <img v-if="user.avatar" :src="user.avatar" :alt="user.username" />
-                                        <div v-else class="default-avatar">{{ user.username?.charAt(0)?.toUpperCase() }}</div>
+                                <div class="user-left-section">
+                                    <div class="user-info">
+                                        <div class="user-avatar">
+                                            <img v-if="user.avatar" :src="user.avatar" :alt="user.username" />
+                                            <div v-else class="default-avatar">{{ user.username?.charAt(0)?.toUpperCase() }}</div>
+                                        </div>
+                                        <div class="user-details">
+                                            <div class="user-name">{{ user.username }}</div>
+                                            <div class="user-account">{{ user.account }}</div>
+                                        </div>
                                     </div>
-                                    <div class="user-details">
-                                        <div class="user-name">{{ user.username }}</div>
-                                        <div class="user-account">{{ user.account }}</div>
-                                    </div>
-                                </div>
-                                <div class="user-actions">
                                     <span class="user-role" :class="getRoleClass(user.roleId)">
                                         {{ getRoleText(user.roleId) }}
                                     </span>
+                                </div>
+                                <div class="user-actions">
+                                    <!-- 成员显示设为管理员按钮 -->
+                                    <el-button 
+                                        v-if="user.roleId === 2"
+                                        type="success" 
+                                        size="small" 
+                                        @click="handleAddManager(user)"
+                                        :loading="managingUsers.has(user.id || 0)"
+                                        link
+                                    >
+                                        设为管理员
+                                    </el-button>
+                                    <!-- 管理员显示移除管理员按钮 -->
+                                    <el-button 
+                                        v-if="user.roleId === 1"
+                                        type="warning" 
+                                        size="small" 
+                                        @click="handleRemoveManager(user)"
+                                        :loading="managingUsers.has(user.id || 0)"
+                                        link
+                                    >
+                                        移除管理员
+                                    </el-button>
                                 <el-button 
                                     type="danger" 
                                     size="small" 
@@ -230,7 +254,7 @@
     import { ref, onMounted, reactive, computed, nextTick } from 'vue';
     import { ElMessageBox, type FormInstance } from 'element-plus';
     import { Plus, Refresh, User } from '@element-plus/icons-vue';
-    import { getBillList, createBill, updateBill, getBillUsers, deleteBillUser, deleteBill } from '@/api/bill';
+    import { getBillList, createBill, updateBill, getBillUsers, deleteBillUser, deleteBill, addManager, deleteManager } from '@/api/bill';
     import { searchUser } from '@/api/user';
     import { sendInvitation } from '@/api/invitation';
     import type { BillDTO } from '@/dto/BillDTO';
@@ -252,6 +276,7 @@
     const showInviteDialog = ref(false);
     const billUsers = ref<UserDTO[]>([]);
     const deletingUsers = ref(new Set<number>());
+    const managingUsers = ref(new Set<number>());
     
     // 邀请相关数据
     const searchAccount = ref('');
@@ -496,6 +521,54 @@
         }
     };
 
+    // 设为管理员
+    const handleAddManager = async (user: UserDTO) => {
+        if (!user.id) {
+            return;
+        }
+
+        await ElMessageBox.confirm(`确定要将用户 "${user.username}" 设为管理员吗？`, '确认设置', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+        });
+
+        const userId = user.id;
+        managingUsers.value.add(userId);
+        try {
+            await addManager(detailForm.billId, userId);
+            await fetchBillUsers(detailForm.billId);
+        } catch (error) {
+            console.error('设置管理员失败:', error);
+        } finally {
+            managingUsers.value.delete(userId);
+        }
+    };
+
+    // 移除管理员
+    const handleRemoveManager = async (user: UserDTO) => {
+        if (!user.id) {
+            return;
+        }
+
+        await ElMessageBox.confirm(`确定要将用户 "${user.username}" 移除管理员身份吗？`, '确认移除', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+        });
+
+        const userId = user.id;
+        managingUsers.value.add(userId);
+        try {
+            await deleteManager(detailForm.billId, userId);
+            await fetchBillUsers(detailForm.billId);
+        } catch (error) {
+            console.error('移除管理员失败:', error);
+        } finally {
+            managingUsers.value.delete(userId);
+        }
+    };
+
     // 组件挂载时获取数据
     onMounted(() => {
         fetchBillList();
@@ -723,6 +796,12 @@
 
     .user-item:last-child {
         margin-bottom: 0;
+    }
+
+    .user-left-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
     }
 
     .user-info {
