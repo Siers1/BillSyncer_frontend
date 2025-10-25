@@ -324,16 +324,19 @@
     // 获取账本列表
     const fetchBillList = async () => {
         loading.value = true;
-        const params: PageParam<BillDTO> = {
-            pageNum: currentPage.value,
-            pageSize: pageSize.value,
-            params: {},
-        };
+        try {
+            const params: PageParam<BillDTO> = {
+                pageNum: currentPage.value,
+                pageSize: pageSize.value,
+                params: {},
+            };
 
-        const response = await getBillList(params);
-        billList.value = response.records;
-        totalRow.value = response.totalRow;
-        loading.value = false;
+            const response = await getBillList(params);
+            billList.value = response.records;
+            totalRow.value = response.totalRow;
+        } finally {
+            loading.value = false;
+        }
     };
 
     // 刷新列表
