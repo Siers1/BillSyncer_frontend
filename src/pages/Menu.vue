@@ -35,6 +35,16 @@
               <span>消费记录</span>
             </el-menu-item>
           </el-sub-menu>
+          <el-sub-menu index="/statistics">
+            <template #title>
+              <el-icon><PieChart /></el-icon>
+              <span>统计分析</span>
+            </template>
+            <el-menu-item index="/statistics/pay">
+              <el-icon><PieChart /></el-icon>
+              <span>支付分析</span>
+            </el-menu-item>
+          </el-sub-menu>
         </el-menu>
         
         </div>
@@ -124,6 +134,7 @@ import {
     Notebook,
     List,
     Document,
+    PieChart,
 } from '@element-plus/icons-vue';
 
 const router = useRouter();

@@ -42,6 +42,20 @@ const router = createRouter({
                         },
                     ],
                 },
+                {
+                    path: '/statistics',
+                    name: 'Statistics',
+                    redirect: '/statistics/pay',
+                    meta: { title: '统计分析' },
+                    children: [
+                        {
+                            path: 'pay',
+                            name: 'PayInfo',
+                            component: () => import('../pages/PayInfo.vue'),
+                            meta: { title: '支付分析' },
+                        },
+                    ],
+                },
             ],
         },
         {
