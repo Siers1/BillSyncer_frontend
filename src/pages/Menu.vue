@@ -41,7 +41,7 @@
               <span>统计分析</span>
             </template>
             <el-menu-item index="/statistics/pay">
-              <el-icon><PieChart /></el-icon>
+                <el-icon><TrendCharts /></el-icon>
               <span>支付分析</span>
             </el-menu-item>
           </el-sub-menu>
@@ -129,12 +129,12 @@ import {
     User,
     SwitchButton,
     Fold,
-    Expand, 
+    Expand,
     ArrowUp,
     Notebook,
     List,
     Document,
-    PieChart,
+    PieChart, TrendCharts,
 } from '@element-plus/icons-vue';
 
 const router = useRouter();

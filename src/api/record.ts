@@ -3,8 +3,9 @@ import type { PageParam } from '@/dto/PageParam.ts';
 import type { PageDTO } from '@/dto/PageDTO.ts';
 import type { RecordDTO } from '@/dto/RecordDTO.ts';
 import type { UpdateRecordDTO } from '@/dto/UpdateRecordDTO.ts';
+import type { RecordListDTO } from '@/dto/RecordListDTO.ts';
 
-export const getRecordList = (pageParam: PageParam<RecordDTO>) => {
+export const getRecordList = (pageParam: PageParam<RecordListDTO>) => {
     return request.post<PageDTO<RecordDTO>>('/record/list', { data: pageParam });
 };
 

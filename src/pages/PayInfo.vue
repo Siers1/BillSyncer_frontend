@@ -178,11 +178,10 @@ const fetchBills = async () => {
     if (!selectedBillId.value && billList.value.length > 0) {
       selectedBillId.value = billList.value[0].id;
     }
-    // 初始化默认30天范围
+    // 初始化默认时间范围：本月初到今天
     if (!trendRange.value || trendRange.value.length !== 2) {
       const end = new Date();
-      const start = new Date();
-      start.setDate(end.getDate() - 30);
+      const start = new Date(end.getFullYear(), end.getMonth(), 1); // 本月1号
       const fmtDate = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       trendRange.value = [
         `${fmtDate(start)} 00:00:00`,

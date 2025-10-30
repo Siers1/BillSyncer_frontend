@@ -19,6 +19,15 @@
                         :value="bill.id"
                     />
                 </el-select>
+                <el-input
+                    v-model="keyWords"
+                    placeholder="请输入关键词搜索"
+                    style="width: 200px; margin-left: 20px"
+                    clearable
+                    :disabled="!selectedBillId"
+                    @input="handleBillChange"
+                    @clear="handleBillChange"
+                />
             </div>
             <div class="header-right">
                 <el-button 
@@ -29,7 +38,7 @@
                 >
                     添加消费记录
                 </el-button>
-                <el-button @click="refreshRecordList" :icon="Refresh" :loading="loading">
+                <el-button @click="fetchRecordList" :icon="Refresh" :loading="loading">
                     刷新
                 </el-button>
             </div>
@@ -359,13 +368,14 @@
     import { getAllBills } from '@/api/bill';
     import { analyzeStream } from '@/api/ai';
     import { useAuthStore } from '@/stores/authStore';
-    import type { RecordDTO } from '@/dto/RecordDTO';
+    import type { RecordDTO } from '@/dto/RecordDTO.ts';
     import type { UpdateRecordDTO } from '@/dto/UpdateRecordDTO';
     import type { BillDTO } from '@/dto/BillDTO';
     import type { PageParam } from '@/dto/PageParam';
     import type { AIRequest, AIStreamResponse } from '@/dto/AIRequest';
     import { formatDateTime, convertServerDateToLocal, convertLocalDateToServer } from '@/utils/DateUtil';
     import { webSocketService } from '@/utils/websocket';
+    import type { RecordListDTO } from '@/dto/RecordListDTO.ts';
 
     // 获取用户store
     const authStore = useAuthStore();
@@ -409,6 +419,7 @@
     const loading = ref(false);
     const billListLoading = ref(false);
     const selectedBillId = ref<number>();
+    const keyWords = ref<string>('');
 
     // 分页相关
     const currentPage = ref(1);
@@ -519,11 +530,12 @@
 
         loading.value = true;
         try {
-            const params: PageParam<RecordDTO> = {
+            const params: PageParam<RecordListDTO> = {
                 pageNum: currentPage.value,
                 pageSize: pageSize.value,
                 params: {
-                    billId: selectedBillId.value
+                    billId: selectedBillId.value,
+                    keyWords: keyWords.value
                 },
             };
             const response = await getRecordList(params);
@@ -537,11 +549,6 @@
     // 账本选择改变
     const handleBillChange = () => {
         currentPage.value = 1;
-        fetchRecordList();
-    };
-
-    // 刷新列表
-    const refreshRecordList = () => {
         fetchRecordList();
     };
 
@@ -681,15 +688,6 @@
         fetchBillList();
     };
 
-    // 组件挂载时设置 WebSocket 监听
-    onMounted(() => {
-        // 添加 WebSocket 消息监听器，用于实时更新账本列表
-        webSocketService.addMessageListener(handleWebSocketMessage);
-        
-        // 不再主动获取账本列表，改为在下拉列表展开时获取
-        // 这样确保每次都是最新数据
-    });
-
     // AI面板相关功能
     const toggleAIPanel = () => {
         showAIPanel.value = !showAIPanel.value;
@@ -762,11 +760,6 @@
         }
     };
 
-    // 组件卸载时清理
-    onUnmounted(() => {
-        // 移除 WebSocket 消息监听器
-        webSocketService.removeMessageListener(handleWebSocketMessage);
-    });
 </script>
 
 <style scoped>
