@@ -216,11 +216,11 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref} from "vue";
-import {getCities, getDistricts, getProvinces} from "../../../api/address.js";
-import {userApi} from "../../../api/user.js";
-import {ElMessage} from "element-plus";
-import {useAuthStore} from "../../../stores/auth.js";
+import { onMounted, reactive, ref } from "vue";
+import { getCities, getDistricts, getProvinces } from "../../../api/address.js";
+import { userApi } from "../../../api/user.js";
+import { ElMessage } from "element-plus";
+import { useAuthStore } from "../../../stores/auth.js";
 import router from "../../../router/index.js";
 import { uploadImage } from "../../../api/file.js";
 
