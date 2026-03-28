@@ -29,37 +29,37 @@ cd ConsumptionBill
 
 ### 环境要求
 - Node.js: ^20.19.0 或 >=22.12.0
-- npm: 最新版本
+- pnpm: 最新版本
 
 ### 安装依赖
 ```bash
-npm install
+pnpm install
 ```
 
 ### 开发模式
 ```bash
-npm run dev
+pnpm dev
 ```
 访问地址：`http://localhost:5173`
 
 ### 构建生产版本
 ```bash
-npm run build
+pnpm build
 ```
 
 ### 其他命令
 ```bash
 # 预览生产构建
-npm run preview
+pnpm preview
 
 # 类型检查
-npm run type-check
+pnpm type-check
 
 # 代码格式化
-npm run format
+pnpm format
 
 # 代码检查
-npm run lint
+pnpm lint
 ```
 
 ## Docker 部署
