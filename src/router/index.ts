@@ -56,6 +56,20 @@ const router = createRouter({
                         },
                     ],
                 },
+                {
+                    path: '/budget',
+                    name: 'Budget',
+                    redirect: '/budget/manage',
+                    meta: { title: '预算管理' },
+                    children: [
+                        {
+                            path: 'manage',
+                            name: 'BudgetManage',
+                            component: () => import('../pages/BudgetManagePage.vue'),
+                            meta: { title: '预算管理' },
+                        },
+                    ],
+                },
             ],
         },
         {

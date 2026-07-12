@@ -335,9 +335,7 @@
             billList.value = response.records;
             totalRow.value = response.totalRow;
         } finally {
-            setTimeout(() => {
-                loading.value = false;
-            }, 500);
+            loading.value = false;
         }
     };
 
