@@ -81,7 +81,7 @@
                                 <div class="info-label">预算金额</div>
                                 <div class="info-value">
                                     <span v-if="budgetData.budget">{{ budgetData.budget }}</span>
-                                    <span v-else class="no-limit">无上限</span>
+                                    <span v-else class="no-limit">未设置</span>
                                 </div>
                                 <div class="info-unit" v-if="budgetData.budget">元</div>
                             </div>
@@ -101,7 +101,7 @@
                                 >
                                     {{ remainingBudget }}
                                 </div>
-                                <div class="info-value no-limit" v-else>无上限</div>
+                                <div class="info-value no-limit" v-else> - </div>
                                 <div class="info-unit" v-if="budgetData.budget">元</div>
                             </div>
                         </div>

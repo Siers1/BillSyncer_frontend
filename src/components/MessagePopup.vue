@@ -46,7 +46,7 @@
                         >
                             <div class="invitation-brief">
                                 <div class="invitation-title">
-                                    用户 {{ invitation.inviterId }} 的邀请
+                                    {{ invitation.inviterName }} 的邀请
                                 </div>
                                 <div class="invitation-time">
                                     {{ formatTime(invitation.createTime) }}
@@ -77,12 +77,12 @@
                     <div class="detail-content">
                         <div class="detail-item">
                             <label>邀请者：</label>
-                            <span class="highlight">用户 {{ selectedInvitation.inviterId }}</span>
+                            <span class="highlight">{{ selectedInvitation.inviterName }}</span>
                         </div>
 
                         <div class="detail-item">
                             <label>账单：</label>
-                            <span class="highlight">{{ selectedInvitation.billId }}</span>
+                            <span class="highlight">{{ selectedInvitation.billName }}</span>
                         </div>
 
                         <div class="detail-item">
@@ -101,6 +101,7 @@
                                           : 'danger'
                                 "
                                 size="small"
+                                style="margin-top: 20px"
                             >
                                 {{
                                     selectedInvitation.status === 0
@@ -113,10 +114,9 @@
                         </div>
 
                         <div class="invitation-message">
-                            用户
-                            <span class="highlight">{{ selectedInvitation.inviterId }}</span>
+                            <span class="highlight">{{ selectedInvitation.inviterName }}</span>
                             邀请你加入账单
-                            <span class="highlight">{{ selectedInvitation.billId }}</span>
+                            <span class="highlight">{{ selectedInvitation.billName }}</span>
                             ， 请选择是否接受此邀请。
                         </div>
                     </div>
@@ -158,15 +158,15 @@
     import { ChatDotRound, Refresh } from '@element-plus/icons-vue';
     import { getInvitationList, handleInvitation, readNotification } from '@/api/invitation';
     import { webSocketService } from '@/utils/websocket';
-    import type { InvitationDTO } from '@/dto/InvitationDTO';
+    import type { InvitationVO } from '../dto/InvitationVO';
     import type { HandleInvitationDTO } from '@/dto/HandleInvitationDTO';
     import { useAuthStore } from '@/stores/authStore.ts';
     import router from '@/router';
 
     const dialogVisible = ref(false);
     const loading = ref(false);
-    const invitations = ref<InvitationDTO[]>([]);
-    const selectedInvitation = ref<InvitationDTO | null>(null);
+    const invitations = ref<InvitationVO[]>([]);
+    const selectedInvitation = ref<InvitationVO | null>(null);
     const actionLoading = ref<Record<number, boolean>>({});
     const authStore = useAuthStore();
 
@@ -205,7 +205,7 @@
         await webSocketService.refreshUnreadCount();
     };
 
-    const selectInvitation = async (invitation: InvitationDTO) => {
+    const selectInvitation = async (invitation: InvitationVO) => {
         selectedInvitation.value = invitation;
         await readNotification(invitation.id);
 

@@ -1,5 +1,5 @@
 import request from '@/utils/request.ts';
-import type { InvitationDTO } from '@/dto/InvitationDTO.ts';
+import type { InvitationVO } from '@/dto/InvitationVO.ts';
 import type { HandleInvitationDTO } from '@/dto/HandleInvitationDTO.ts';
 import type { SendInvitationRequest } from '@/dto/SendInvitationRequest.ts';
 
@@ -8,7 +8,7 @@ export const getUnReadInvitation = () => {
 };
 
 export const getInvitationList = () => {
-    return request.get<InvitationDTO[]>('/invitation/list');
+    return request.get<InvitationVO[]>('/invitation/list');
 };
 
 export const handleInvitation = (handleInvitationDTO: HandleInvitationDTO) => {
