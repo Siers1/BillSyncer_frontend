@@ -14,9 +14,15 @@
                         <h1 class="app-name">共享账本</h1>
                     </div>
                     <div class="illustration-icons">
-                        <div class="icon-item">💰</div>
-                        <div class="icon-item">📊</div>
-                        <div class="icon-item">👥</div>
+                        <div class="icon-item">
+                            <el-icon><Money /></el-icon>
+                        </div>
+                        <div class="icon-item">
+                            <el-icon><Histogram /></el-icon>
+                        </div>
+                        <div class="icon-item">
+                            <el-icon><Connection /></el-icon>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,7 +80,7 @@
 <script setup lang="ts">
     import { reactive, ref } from 'vue';
     import { useRouter } from 'vue-router';
-    import { User, Lock } from '@element-plus/icons-vue';
+    import { User, Lock, Money, Histogram, Connection } from '@element-plus/icons-vue';
     import { login } from '@/api/auth';
     import { useAuthStore } from '@/stores/authStore';
     import type { LoginDTO } from '@/dto/LoginDTO';

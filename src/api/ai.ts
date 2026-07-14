@@ -1,13 +1,6 @@
 import type { AIRequest, AIStreamResponse } from '@/dto/AIRequest';
 import { useAuthStore } from '@/stores/authStore';
 
-/**
- * AI分析接口 - 支持流式数据传输
- * @param aiRequest AI请求数据
- * @param onMessage 接收流式数据的回调函数
- * @param onError 错误处理回调函数
- * @param onComplete 完成时的回调函数
- */
 export const analyzeStream = async (
     aiRequest: AIRequest,
     onMessage: (data: AIStreamResponse) => void,
